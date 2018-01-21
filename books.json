@@ -1,0 +1,204 @@
+{
+
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0",
+    "title" : "RestServiceForBooks"
+  },
+
+  "host" : "host_name:8080",
+  "basePath" : "/Test/rest",
+  "schemes" : ["http"],
+  "paths" : {
+    "/Book" : {
+      "get" : {
+        "operationId" : "getBooks",
+        "description" : "Returns all the available books in teh store",
+        "produces" : [ "application/xml", "application/json" ],
+        "responses" : {
+          "default" : {
+            "schema" : {
+              "$ref" : "#/definitions/Books"
+            }
+          }
+        }
+
+      },
+      "post" : {
+        "operationId" : "postBook",
+        "description" : "Creates a new book item",
+        "produces" : [ "application/xml", "application/json" ],
+        "consumes" : [ "application/xml", "application/json" ],
+        "parameters" : [
+          {
+            "name" : "Book",
+            "in" : "body",
+            "required" : true,
+            "schema" : { "$ref" : "#/definitions/Book" }
+          }
+        ],
+        "responses" : {
+          "default" : {
+            "schema" : { "$ref" : "#/definitions/Book" }
+          }
+        }
+      }
+    },
+    "/Book/{id}" : {
+      "get" : {
+        "operationId" : "getSingleBook",
+        "description" : "Returns a book with specific id",
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [
+          {
+            "name": "id",
+            "in": "path",
+            "required" : true,
+            "type" : "string"
+          }
+        ],
+        "responses" : {
+          "default" : {
+            "schema" : { "$ref" : "#/definitions/Book" }
+          }
+        }
+      }
+    },
+    "/Book/hello" : {
+      "get" : {
+        "operationId" : "sayHelloToBook",
+        "description" : "says hello to a book",
+        "produces" : [ "application/xml", "application/json" ],
+        "responses" : {
+          "default" : {
+            "schema" : { "type" : "string" }
+          }
+        }
+      }
+    },
+    "/Book/search" : {
+      "get" : {
+        "operationId" : "searchBook",
+        "description" : "Returns a list of books that match query param",
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [
+          {
+            "name": "name",
+            "in": "query",
+            "required" : false,
+            "type" : "string"
+          }
+        ],
+        "responses" : {
+          "default" : {
+            "schema" : {
+              "$ref" : "#/definitions/Books"
+            }
+          }
+        }
+      }
+    },
+    "/Author" : {
+      "get" : {
+        "operationId" : "getAuthors",
+        "description": "Returns a list of authors",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref" : "#/definitions/Authors"
+            }
+          }
+        }
+      }
+    },
+    "/Author/{id}" : {
+      "get" : {
+        "operationId" : "getSingleAuthor",
+        "description" : "Returns a Author with specific id",
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [
+          {
+            "name": "id",
+            "in": "path",
+            "required" : true,
+            "type" : "string"
+          }
+        ],
+        "responses" : {
+          "default" : {
+            "schema" : { "$ref" : "#/definitions/Author" }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Author" : {
+      "type" : "object",
+      "properties" : {
+        "id" : { "type" : "string" },
+        "firstName" : { "type"  : "string"},
+        "lastName" : { "type" : "string" }
+      },
+      "required" : [ "id", "firstName", "lastName"]
+    },
+    "Authors" : {
+      "type" : "object",
+      "properties" : {
+        "items" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Author"
+          }
+        }
+      }
+    },
+    "Publisher" : {
+      "type" : "object",
+      "properties" : {
+        "id" : { "type" : "string" },
+        "name" : { "type"  : "string"},
+        "location" : { "type" : "string" }
+      },
+      "required" : [ "id", "name", "location"]
+    },
+    "Publishers" : {
+      "type" : "object",
+      "properties" : {
+        "items" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Publisher"
+          }
+        }
+      }
+    },
+    "Book" : {
+      "type" : "object",
+      "properties" : {
+        "id" : { "type" : "string" },
+        "name" : { "type" : "string" },
+        "ISBN" : { "type" : "string" },
+        "price" : { "type" : "integer" },
+        "author" : { "type" : "array", "items" :{ "$ref" : "#/definitions/Author" } },
+        "publisher" : { "$ref" : "#/definitions/Publisher"  }
+      },
+      "required" : ["id", "name", "ISBN", "price", "author", "publisher" ]
+    },
+    "Books" : {
+      "type" : "object",
+      "properties" : {
+        "items" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Book"
+          }
+        }
+      }
+    }
+  }
+}
